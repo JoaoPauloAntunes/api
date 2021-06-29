@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, Float
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -12,8 +12,17 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
+    requisitions = relationship("Requisition", back_populates="owner")
 
 
-class Item(Base):
-    __tablename__ = "items"
+class Requisition(Base):
+    __tablename__ = "requisitions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    file_url = Column(String, unique=True, index=True)
+    date = Column(Date, index=True)
+    progress_level = Column(Float)
+    is_free = Column(Boolean)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+
+    owner = relationship("User", back_populates="requisitions")

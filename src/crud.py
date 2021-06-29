@@ -1,7 +1,6 @@
 from typing import Dict, Union, Any
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.functions import mode, user
 
 from . import models, schemas
 
@@ -142,10 +141,10 @@ def get_requisitions(
 
 def create_user_requisition(
     db: Session, 
-    requisitions: schemas.RequisitionCreate, 
+    requisition: schemas.RequisitionCreate, 
     user_id: int
 ):
-    db_requisition = models.Requisition(**requisitions.dict(), owner_id=user_id)
+    db_requisition = models.Requisition(**requisition.dict(), owner_id=user_id)
     db.add(db_requisition)
     db.commit()
     db.refresh(db_requisition)

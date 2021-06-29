@@ -112,7 +112,9 @@ def remove_user(
 
 @app.post("/users/{user_id}/requisitions/", response_model=schemas.Requisition)
 def create_requisition_for_user(
-    user_id: int, requisitions: schemas.RequisitionCreate, db: Session = Depends(get_db)
+    user_id: int, 
+    requisition: schemas.RequisitionCreate, 
+    db: Session = Depends(get_db)
 ):
     """
     Create an requisition for a user.
@@ -120,7 +122,7 @@ def create_requisition_for_user(
     db_user = crud.get_user(db=db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return crud.create_user_requisition(db=db, requisitions=requisitions, user_id=user_id)
+    return crud.create_user_requisition(db=db, requisition=requisition, user_id=user_id)
 
 
 @app.get("/requisitions/", response_model=List[schemas.Requisition])

@@ -18,9 +18,9 @@ class User(Base):
 class Requisition(Base):
     __tablename__ = "requisitions"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True) # alterar para "reqn", tipo: uuid4
     file_url = Column(String, unique=True, index=True)
-    date = Column(Date, index=True)
+    last_modified = Column(Date, index=True)
     progress_level = Column(Float)
     is_free = Column(Boolean)
     owner_id = Column(Integer, ForeignKey("users.id"))

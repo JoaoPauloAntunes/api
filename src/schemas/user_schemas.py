@@ -1,35 +1,17 @@
 from typing import List, Optional
-
 from pydantic import BaseModel, EmailStr
 
-
-class RequisitionBase(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-# file_url
-# date
-# progress_level
-# is_free
-# owner_id
-# owner
-
-class RequisitionCreate(RequisitionBase):
-    file_url: str
-    
+from .requisition_schemas import Requisition
 
 
-class RequisitionUpdate(RequisitionBase):
-    owner_id: Optional[int] = None
+"""
+  id
+  email
+  hashed_password
+  is_active
 
-
-class Requisition(RequisitionBase):
-    id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-
+  requisitions
+"""
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
     is_active: Optional[bool] = True

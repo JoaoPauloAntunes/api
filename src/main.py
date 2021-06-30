@@ -1,6 +1,5 @@
 from typing import (
     List,
-    Any
 )
 
 from fastapi import (
@@ -87,7 +86,7 @@ def update_user(
     user_id: int, 
     user_in: user_schemas.UserUpdate,
     db: Session = Depends(get_db)
-) -> Any:
+):
     """
     Update a user.
     """
@@ -101,7 +100,7 @@ def update_user(
 def remove_user(
     user_id: int, 
     db: Session = Depends(get_db)
-) -> Any:
+):
     """
     Remove a user.
     """
@@ -143,7 +142,7 @@ def read_requisitions(
 def read_requisition(
     requisition_id: int, 
     db: Session = Depends(get_db)
-) -> Any:
+):
     """
     Read an requisition.
     """
@@ -157,7 +156,7 @@ def read_requisition(
 def remove_requisition(
     requisition_id: int, 
     db: Session = Depends(get_db)
-) -> Any:
+):
     """
     Remove an requisition.
     """
@@ -173,7 +172,7 @@ def update_requisition(
     requisition_id: int, 
     requisition_in: requisition_schemas.RequisitionUpdate,
     db: Session = Depends(get_db)
-) -> Any:
+):
     """
     Update an requisition.
     """

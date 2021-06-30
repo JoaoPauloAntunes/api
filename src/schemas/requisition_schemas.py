@@ -1,11 +1,13 @@
 from typing import List, Optional
 from pydantic import BaseModel, EmailStr
+# from datetime import datetime
 
+# from sqlalchemy.sql.sqltypes import Date, DateTime
 
 """ 
   reqn
   file_url
-  last_modified
+  time_updated
   progress_level
   is_free
   owner_id
@@ -13,17 +15,15 @@ from pydantic import BaseModel, EmailStr
 class RequisitionBase(BaseModel):
     file_url: Optional[str] = None
     progress_level: Optional[float] = None
-
+    is_free: Optional[bool] = True
 
 class RequisitionCreate(RequisitionBase):
     file_url: str
     progress_level: float
-    is_free: bool
 
 
 class RequisitionUpdate(RequisitionBase):
-  # last_modified: str
-  pass
+    pass
 
 
 class Requisition(RequisitionBase):

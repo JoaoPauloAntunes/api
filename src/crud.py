@@ -2,21 +2,21 @@ from typing import Dict, Union, Any
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
-from . import models, schemas
-
+from .models import user_models, requisition_models 
+from .schemas import user_schemas, requisition_schemas
 
 def get_user(
     db: Session, 
     user_id: int
 ):
-    return db.query(models.User).filter(models.User.id == user_id).first()
+    return db.query(user_models.User).filter(user_models.User.id == user_id).first()
     
 
 def remove_user(
     db: Session, 
     user_id: int
 ):
-    db_user = db.query(models.User).get(user_id)
+    db_user = db.query(user_models.User).get(user_id)
     db.delete(db_user)
     db.commit()
     return db_user
@@ -24,8 +24,8 @@ def remove_user(
 
 def update_user(
     db: Session, 
-    db_user: models.User, 
-    user_in = Union[schemas.UserUpdate, Dict[str, Any]]
+    db_user: user_models.User, 
+    user_in = Union[user_schemas.UserUpdate, Dict[str, Any]]
 ):
     user_data = jsonable_encoder(db_user)
     print({"user_data": user_data})
@@ -62,7 +62,7 @@ def get_user_by_email(
     db: Session, 
     email: str
 ):
-    return db.query(models.User).filter(models.User.email == email).first()
+    return db.query(user_models.User).filter(user_models.User.email == email).first()
 
 
 def get_users(
@@ -70,15 +70,15 @@ def get_users(
     skip: int = 0, 
     limit: int = 100
 ):
-    return db.query(models.User).offset(skip).limit(limit).all()
+    return db.query(user_models.User).offset(skip).limit(limit).all()
 
 
 def create_user(
     db: Session, 
-    user: schemas.UserCreate
+    user: user_schemas.UserCreate
 ):
     fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    db_user = user_models.User(email=user.email, hashed_password=fake_hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -89,14 +89,14 @@ def get_requisition(
     db: Session,
     requisition_id: int
 ):
-    return db.query(models.Requisition).filter(models.Requisition.id == requisition_id).first()
+    return db.query(requisition_models.Requisition).filter(requisition_models.Requisition.id == requisition_id).first()
     
 
 def remove_requisition(
     db: Session, 
     requisition_id: int
 ):
-    db_requisition = db.query(models.Requisition).get(requisition_id)
+    db_requisition = db.query(requisition_models.Requisition).get(requisition_id)
     db.delete(db_requisition)
     db.commit()
     return db_requisition
@@ -104,8 +104,8 @@ def remove_requisition(
 
 def update_requisition(
     db: Session, 
-    db_requisition: models.Requisition, 
-    requisition_in = Union[schemas.RequisitionUpdate, Dict[str, Any]]
+    db_requisition: requisition_models.Requisition, 
+    requisition_in = Union[requisition_schemas.RequisitionUpdate, Dict[str, Any]]
 ):
     requisition_data = jsonable_encoder(db_requisition)
     print({"requisition_data": requisition_data})
@@ -136,15 +136,15 @@ def get_requisitions(
     skip: int = 0, 
     limit: int = 100
 ):
-    return db.query(models.Requisition).offset(skip).limit(limit).all()
+    return db.query(requisition_models.Requisition).offset(skip).limit(limit).all()
 
 
 def create_user_requisition(
     db: Session, 
-    requisition: schemas.RequisitionCreate, 
+    requisition: requisition_schemas.RequisitionCreate, 
     user_id: int
 ):
-    db_requisition = models.Requisition(**requisition.dict(), owner_id=user_id)
+    db_requisition = requisition_models.Requisition(**requisition.dict(), owner_id=user_id)
     db.add(db_requisition)
     db.commit()
     db.refresh(db_requisition)

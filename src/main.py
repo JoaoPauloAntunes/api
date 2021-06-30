@@ -14,12 +14,13 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import user
 
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+from . import crud
+from .models import user_models, requisition_models 
+from .schemas import user_schemas, requisition_schemas
+from .database import SessionLocal, engine, Base
 
 
-models.Base.metadata.create_all(bind=engine)
-
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -40,9 +41,9 @@ def root():
     return response
 
 
-@app.post("/users/", response_model=schemas.User)
+@app.post("/users/", response_model=user_schemas.User)
 def create_user(
-    user: schemas.UserCreate, 
+    user: user_schemas.UserCreate, 
     db: Session = Depends(get_db)
 ):
     """
@@ -54,7 +55,7 @@ def create_user(
     return crud.create_user(db=db, user=user)
 
 
-@app.get("/users/", response_model=List[schemas.User])
+@app.get("/users/", response_model=List[user_schemas.User])
 def read_users(
     skip: int = 0, 
     limit: int = 100, 
@@ -67,7 +68,7 @@ def read_users(
     return users
 
 
-@app.get("/users/{user_id}", response_model=schemas.User)
+@app.get("/users/{user_id}", response_model=user_schemas.User)
 def read_user(
     user_id: int, 
     db: Session = Depends(get_db)
@@ -81,10 +82,10 @@ def read_user(
     return db_user
 
 
-@app.put("/users/{user_id}", response_model=schemas.User)
+@app.put("/users/{user_id}", response_model=user_schemas.User)
 def update_user(
     user_id: int, 
-    user_in: schemas.UserUpdate,
+    user_in: user_schemas.UserUpdate,
     db: Session = Depends(get_db)
 ) -> Any:
     """
@@ -96,7 +97,7 @@ def update_user(
     return crud.update_user(db=db, db_user=db_user, user_in=user_in)
 
 
-@app.delete("/users/{user_id}", response_model=schemas.User)
+@app.delete("/users/{user_id}", response_model=user_schemas.User)
 def remove_user(
     user_id: int, 
     db: Session = Depends(get_db)
@@ -110,10 +111,10 @@ def remove_user(
     return crud.remove_user(db=db, user_id=user_id)
 
 
-@app.post("/users/{user_id}/requisitions/", response_model=schemas.Requisition)
+@app.post("/users/{user_id}/requisitions/", response_model=requisition_schemas.Requisition)
 def create_requisition_for_user(
     user_id: int, 
-    requisition: schemas.RequisitionCreate, 
+    requisition: requisition_schemas.RequisitionCreate, 
     db: Session = Depends(get_db)
 ):
     """
@@ -125,7 +126,7 @@ def create_requisition_for_user(
     return crud.create_user_requisition(db=db, requisition=requisition, user_id=user_id)
 
 
-@app.get("/requisitions/", response_model=List[schemas.Requisition])
+@app.get("/requisitions/", response_model=List[requisition_schemas.Requisition])
 def read_requisitions(
     skip: int = 0, 
     limit: int = 100, 
@@ -138,7 +139,7 @@ def read_requisitions(
     return requisitions
 
 
-@app.get("/requisitions/{requisition_id}", response_model=schemas.Requisition)
+@app.get("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
 def read_requisition(
     requisition_id: int, 
     db: Session = Depends(get_db)
@@ -152,7 +153,7 @@ def read_requisition(
     return db_requisition
 
 
-@app.delete("/requisitions/{requisition_id}", response_model=schemas.Requisition)
+@app.delete("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
 def remove_requisition(
     requisition_id: int, 
     db: Session = Depends(get_db)
@@ -167,10 +168,10 @@ def remove_requisition(
     return db_requisition
 
 
-@app.put("/requisitions/{requisition_id}", response_model=schemas.Requisition)
+@app.put("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
 def update_requisition(
     requisition_id: int, 
-    requisition_in: schemas.RequisitionUpdate,
+    requisition_in: requisition_schemas.RequisitionUpdate,
     db: Session = Depends(get_db)
 ) -> Any:
     """

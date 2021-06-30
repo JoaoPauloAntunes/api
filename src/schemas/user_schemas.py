@@ -14,7 +14,6 @@ from .requisition_schemas import Requisition
 """
 class UserBase(BaseModel):
     email: Optional[EmailStr] = None
-    is_active: Optional[bool] = True
 
 class UserCreate(UserBase):
     email: EmailStr
@@ -23,10 +22,12 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     password: Optional[str] = None
+    is_active: Optional[bool] = True
 
 
 class User(UserBase):
     id: Optional[int] = None
+    is_active: bool = True
     requisitions: List[Requisition] = []
 
     class Config:

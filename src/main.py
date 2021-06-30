@@ -138,45 +138,45 @@ def read_requisitions(
     return requisitions
 
 
-@app.get("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
+@app.get("/requisitions/{reqn}", response_model=requisition_schemas.Requisition)
 def read_requisition(
-    requisition_id: int, 
+    reqn: int, 
     db: Session = Depends(get_db)
 ):
     """
     Read an requisition.
     """
-    db_requisition = crud.get_requisition(db=db, requisition_id=requisition_id)
+    db_requisition = crud.get_requisition(db=db, reqn=reqn)
     if db_requisition is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requisition not found")
     return db_requisition
 
 
-@app.delete("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
+@app.delete("/requisitions/{reqn}", response_model=requisition_schemas.Requisition)
 def remove_requisition(
-    requisition_id: int, 
+    reqn: int, 
     db: Session = Depends(get_db)
 ):
     """
     Remove an requisition.
     """
-    db_requisition = crud.get_requisition(db=db, requisition_id=requisition_id)
+    db_requisition = crud.get_requisition(db=db, reqn=reqn)
     if db_requisition is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requisition not found")
-    db_requisition = crud.remove_requisition(db=db, requisition_id=requisition_id)
+    db_requisition = crud.remove_requisition(db=db, reqn=reqn)
     return db_requisition
 
 
-@app.put("/requisitions/{requisition_id}", response_model=requisition_schemas.Requisition)
+@app.put("/requisitions/{reqn}", response_model=requisition_schemas.Requisition)
 def update_requisition(
-    requisition_id: int, 
+    reqn: int, 
     requisition_in: requisition_schemas.RequisitionUpdate,
     db: Session = Depends(get_db)
 ):
     """
     Update an requisition.
     """
-    db_requisition = crud.get_requisition(db=db, requisition_id=requisition_id)
+    db_requisition = crud.get_requisition(db=db, reqn=reqn)
     if db_requisition is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requisition not found")
     return crud.update_requisition(db=db, db_requisition=db_requisition, requisition_in=requisition_in)

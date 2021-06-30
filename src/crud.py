@@ -87,16 +87,16 @@ def create_user(
 
 def get_requisition(
     db: Session,
-    requisition_id: int
+    reqn: int
 ):
-    return db.query(requisition_models.Requisition).filter(requisition_models.Requisition.id == requisition_id).first()
+    return db.query(requisition_models.Requisition).filter(requisition_models.Requisition.reqn == reqn).first()
     
 
 def remove_requisition(
     db: Session, 
-    requisition_id: int
+    reqn: int
 ):
-    db_requisition = db.query(requisition_models.Requisition).get(requisition_id)
+    db_requisition = db.query(requisition_models.Requisition).get(reqn)
     db.delete(db_requisition)
     db.commit()
     return db_requisition
